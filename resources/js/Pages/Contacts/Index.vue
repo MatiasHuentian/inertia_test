@@ -55,12 +55,9 @@ export default {
                         </tr>
                     </tbody>
                 </table>
-
-                <Pagination />
+                <Pagination :pagination="contacts">  </Pagination>
             </div>
-
         </div>
-
         <pre>
             {{ contacts.data }}
         </pre>
