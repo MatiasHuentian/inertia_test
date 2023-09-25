@@ -5,20 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ContactController extends Controller
 {
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = Contact::with('organization')->paginate();
+        $filters = $request->all('search');
+        $contacts = Contact::with('organization')->Filter($filters)
+            ->paginate();
 
-        return Inertia::render('Contacts/Index', ['contacts' => $contacts]);
+        return Inertia::render('Contacts/Index', ['contacts' => $contacts, 'filters' => $filters]);
     }
 
     public function create()
@@ -39,7 +43,7 @@ class ContactController extends Controller
      */
     public function edit(Contact $contact)
     {
-        return Inertia::render('Contacts/Edit' , compact('contact') );
+        return Inertia::render('Contacts/Edit', compact('contact'));
     }
 
     /**

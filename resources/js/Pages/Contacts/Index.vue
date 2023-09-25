@@ -1,17 +1,31 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Pagination from '@/Components/Pagination.vue';
+import TextInput from '@/Components/TextInput.vue';
+import pickBy from 'lodash/pickBy';
 
 export default {
+    data() {
+        return {
+            search: this.filters.search,
+        }
+    },
     components: {
         AppLayout,
         Pagination,
+        TextInput,
     },
     props: {
         contacts: {
             type: Object,
             required: true,
         },
+        filters: Object,
+    },
+    watch: {
+        search( value){
+            this.$inertia.get('/contacts', pickBy({ search : value }) , {preserveState:true});
+        }
     }
 }
 </script>
@@ -26,6 +40,11 @@ export default {
         <div class="max-w-7x1 mx-auto px-4 sm:px-6 lg:px-8">
             <!-- component -->
             <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
+                <div class="px-6 py-4">
+                    <TextInput class="w-full" v-model="search" placeholder="Ingrese texto a filtrar">
+
+                    </TextInput>
+                </div>
                 <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
                     <thead class="bg-gray-50">
                         <tr>
@@ -58,9 +77,9 @@ export default {
                 <Pagination :pagination="contacts">  </Pagination>
             </div>
         </div>
-        <pre>
+        <!-- <pre>
             {{ contacts.data }}
-        </pre>
+        </pre> -->
     </AppLayout>
 </template>
 <style></style>
