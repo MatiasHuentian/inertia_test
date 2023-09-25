@@ -7,10 +7,11 @@
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
         {{-- Font/awesome --}}
-        <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css' . '?version=' . Str::random()) }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
+
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
