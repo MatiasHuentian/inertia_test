@@ -3,17 +3,19 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import Pagination from '@/Components/Pagination.vue';
 import TextInput from '@/Components/TextInput.vue';
 import pickBy from 'lodash/pickBy';
+import { Link } from '@inertiajs/vue3';
 
 export default {
-    data() {
-        return {
-            search: this.filters.search,
-        }
-    },
     components: {
         AppLayout,
         Pagination,
         TextInput,
+        Link,
+    },
+    data() {
+        return {
+            search: this.filters.search,
+        }
     },
     props: {
         contacts: {
@@ -23,8 +25,8 @@ export default {
         filters: Object,
     },
     watch: {
-        search( value){
-            this.$inertia.get('/contacts', pickBy({ search : value }) , {preserveState:true});
+        search(value) {
+            this.$inertia.get('/contacts', pickBy({ search: value }), { preserveState: true });
         }
     }
 }
@@ -37,22 +39,24 @@ export default {
             </h2>
         </template>
 
-        <div class="max-w-7x1 mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="container">
             <!-- component -->
             <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
-                <div class="px-6 py-4">
-                    <TextInput class="w-full" v-model="search" placeholder="Ingrese texto a filtrar">
+                <div class="px-6 py-4 flex items-center">
+                    <TextInput class="flex-1" v-model="search" placeholder="Ingrese texto a filtrar">
 
                     </TextInput>
+                    <Link :href="route('contacts.create')" class="ml-4 flex-shrink-0 btn btn-blue">Nuevo</Link>
+
                 </div>
                 <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Name</th>
-                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Organization</th>
-                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">City</th>
-                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Phone</th>
-                            <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+                            <th scope="col" class="basic-th">Name</th>
+                            <th scope="col" class="basic-th">Organization</th>
+                            <th scope="col" class="basic-th">City</th>
+                            <th scope="col" class="basic-th">Phone</th>
+                            <th scope="col" class="basic-th"></th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -74,7 +78,7 @@ export default {
                         </tr>
                     </tbody>
                 </table>
-                <Pagination :pagination="contacts">  </Pagination>
+                <Pagination :pagination="contacts"> </Pagination>
             </div>
         </div>
         <!-- <pre>

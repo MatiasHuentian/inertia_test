@@ -20,6 +20,7 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
-        "lodash": "^4.17.21"
+        "lodash": "^4.17.21",
+        "vite-plugin-vuetify": "^1.0.2"
     }
 }

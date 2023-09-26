@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
+use App\Models\Country;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -20,6 +22,7 @@ class ContactController extends Controller
     {
         $filters = $request->all('search');
         $contacts = Contact::with('organization')->Filter($filters)
+            ->latest('id')
             ->paginate();
 
         return Inertia::render('Contacts/Index', ['contacts' => $contacts, 'filters' => $filters]);
@@ -27,15 +30,33 @@ class ContactController extends Controller
 
     public function create()
     {
-        return Inertia::render('Contacts/Create');
+        $organizations = Organization::all();
+        $countries = Country::all();
+        return Inertia::render('Contacts/Create' , compact('organizations' , 'countries') );
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreContactRequest $request)
+    public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            "first_name" => [ 'required' ],
+            "last_name" => [ 'required' ],
+            "organization_id" => [ 'required' ],
+            "email" => [ 'required' ],
+            "phone" => [ 'required' ],
+            "address" => [ 'required' ],
+            "city" => [ 'required' ],
+            "state" => [ 'required' ],
+            "country_id" => [ 'required' ],
+            "postal_code" => [ 'required' ],
+        ]);
+
+        $contact = Contact::create($data);
+
+        return redirect()->route('contacts.edit' , $contact->id);
+        return $request->all();
     }
 
     /**
